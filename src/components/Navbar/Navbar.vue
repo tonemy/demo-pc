@@ -9,10 +9,10 @@
       :style="{ lineHeight: '64px' }"
     >
       <a-menu-item key="user_home">
-        <a-icon type="home" />首页
+        <router-link  to="/home"> <a-icon type="home" /> 首页</router-link >
       </a-menu-item>
       <a-menu-item key="app">
-        <a-icon type="shopping-cart" /> 商城
+        <router-link  to="/shop"> <a-icon type="shopping-cart" /> 商城</router-link>
       </a-menu-item>
       <a-sub-menu>
         <span slot="title" class="submenu-title-wrapper"><a-icon type="shop" />活动</span>
@@ -30,8 +30,15 @@
       <a-sub-menu style="float: right">
         <span slot="title" class="submenu-title-wrapper">    <a-icon type="user" />用户</span>
         <a-menu-item-group>
-          <a-menu-item key="setting:5">登录</a-menu-item>
-          <a-menu-item key="setting:6">退出</a-menu-item>
+          <a-menu-item key="setting:1"  @click="showLoginModal">登录</a-menu-item>
+          <a-modal :footer= "null" title="用户登录" v-model="visibleLogin" @ok="handleLoginOk">
+            <login></login>
+          </a-modal>
+          <a-menu-item key="setting:2" @click="showResgisterModal">注册</a-menu-item>
+          <a-modal :footer= "null" title="用户注册" v-model="visibleResgister" @ok="handleResgisterOk">
+            <register></register>
+          </a-modal>
+          <a-menu-item key="setting:3">退出</a-menu-item>
         </a-menu-item-group>
       </a-sub-menu>
       <a-menu-item style="float: right">
@@ -53,14 +60,41 @@
 </template>
 
 <script>
+  import Login from '../Login/Login'
+  import Register from "../Register/Register";
   export default {
-    name: "Navbar.vue"
+    name: "Navbar"
+    ,components: {
+
+      'login': Login
+      ,'register': Register
+    }
     ,data () {
       return {
-        current: ['mail'],
+        current: ['mail']
+        ,visibleLogin: false
+        ,visibleResgister: false
       }
     }
-    ,
+    ,methods : {
+      showLoginModal() {
+        this.visibleLogin = true;
+      }
+      ,handleLoginOk(e) {
+        console.log(e);
+        this.visibleLogin = false;
+      }
+      ,showResgisterModal() {
+        this.visibleResgister = true;
+      }
+      ,handleResgisterOk(e) {
+        console.log(e);
+        this.visibleResgister = false;
+      }
+      ,cancel() {
+
+      }
+    }
   }
 </script>
 
