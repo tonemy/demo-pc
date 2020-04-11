@@ -6,13 +6,16 @@ import Login from '../components/Login/Login'
 import Home from '../components/Home/Home'
 import Shop from "../components/Shop/Shop";
 import Register from "../components/Register/Register"
+import ShopDetail from "../components/ShopDetail/ShopDetail"
 
 Vue.use(Router)
 
 export default new Router({
 
   routes: [
-    {
+
+
+     {
       path: '/register'
       ,name: 'Register'
       ,component: Register
@@ -33,6 +36,12 @@ export default new Router({
           path: '/shop'
           ,name: '/Shop'
           ,component: Shop
+        }
+        ,{
+          path: '/shopDetail'
+          ,name: 'ShopDetail'
+          ,component: ShopDetail
+
         }
         ,{
           path: '/login'

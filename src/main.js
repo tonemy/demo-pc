@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import Antd from 'ant-design-vue'
 import FormModel  from 'ant-design-vue';
-import {Form} from 'ant-design-vue'
+import {Form, } from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import axios from 'axios'
 

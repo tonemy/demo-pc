@@ -31,12 +31,12 @@
         <span slot="title" class="submenu-title-wrapper">    <a-icon type="user" />用户</span>
         <a-menu-item-group>
           <a-menu-item key="setting:1"  @click="showLoginModal">登录</a-menu-item>
-          <a-modal :footer= "null" title="用户登录" v-model="visibleLogin" @ok="handleLoginOk">
-            <login></login>
+          <a-modal :footer= "null" title="用户登录" v-model="visibleLogin" @ok="handleLoginOk" @cancel="handleCancel">
+            <login ref="childLogin"></login>
           </a-modal>
           <a-menu-item key="setting:2" @click="showResgisterModal">注册</a-menu-item>
-          <a-modal :footer= "null" title="用户注册" v-model="visibleResgister" @ok="handleResgisterOk">
-            <register></register>
+          <a-modal :footer= "null" title="用户注册" v-model="visibleResgister" @ok="handleResgisterOk" @cancel="handleCancel">
+            <register ref="childRegister"></register>
           </a-modal>
           <a-menu-item key="setting:3">退出</a-menu-item>
         </a-menu-item-group>
@@ -65,7 +65,6 @@
   export default {
     name: "Navbar"
     ,components: {
-
       'login': Login
       ,'register': Register
     }
@@ -78,6 +77,7 @@
     }
     ,methods : {
       showLoginModal() {
+
         this.visibleLogin = true;
       }
       ,handleLoginOk(e) {
@@ -91,8 +91,14 @@
         console.log(e);
         this.visibleResgister = false;
       }
-      ,cancel() {
-
+      ,handleCancel  ()  {
+        if(this.visibleLogin) {
+          this.$refs.childLogin.formInline.username = '';
+          this.$refs.childLogin.formInline.password = '';
+        }
+        if(this.visibleResgister) {
+          this.$refs.childRegister.resetForm('ruleForm');
+        }
       }
     }
   }

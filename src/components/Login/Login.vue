@@ -1,84 +1,51 @@
 <template>
-  <a-form
-    id="components-form-demo-normal-login"
-    :form="form"
-    class="login-form"
-    @submit="handleSubmit"
-  >
-    <a-form-item>
-      <a-input
-        v-decorator="[
-          'username',
-          { rules: [{ required: true, message: 'Please input your username!' }] },
-        ]"
-        placeholder="Username"
-      >
-        <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
+  <a-form-model layout="horizontal" :model="formInline" @submit="handleSubmit" @submit.native.prevent>
+    <a-form-model-item>
+      <a-input v-model="formInline.username" placeholder="Username">
+        <a-icon slot="prefix" type="user" style="color:rgba(0,0,0,.25)" />
       </a-input>
-    </a-form-item>
-    <a-form-item>
-      <a-input
-        v-decorator="[
-          'password',
-          { rules: [{ required: true, message: 'Please input your Password!' }] },
-        ]"
-        type="password"
-        placeholder="Password"
-      >
-        <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
+    </a-form-model-item>
+    <a-form-model-item>
+      <a-input v-model="formInline.password" type="password" placeholder="Password">
+        <a-icon slot="prefix" type="lock" style="color:rgba(0,0,0,.25)" />
       </a-input>
-    </a-form-item>
-    <a-form-item>
-      <a-checkbox
-        v-decorator="[
-          'remember',
-          {
-            valuePropName: 'checked',
-            initialValue: true,
-          },
-        ]"
+    </a-form-model-item>
+    <a-form-model-item>
+      <a-button
+        type="primary"
+        html-type="submit"
+        :disabled="formInline.username === '' || formInline.password === ''"
       >
-        Remember me
-      </a-checkbox>
-      <a class="login-form-forgot" href="">
-        Forgot password
-      </a>
-      <a-button type="primary" html-type="submit" class="login-form-button">
         Log in
       </a-button>
-      Or
-      <a href="">
-        register now!
-      </a>
-    </a-form-item>
-  </a-form>
+    </a-form-model-item>
+  </a-form-model>
 </template>
 
 <script>
   export default {
-    beforeCreate() {
-      this.form = this.$form.createForm(this, { name: 'normal_login' });
+    data() {
+      return {
+        formInline: {
+          username: '',
+          password: '',
+        },
+      };
     },
     methods: {
       handleSubmit(e) {
-        e.preventDefault();
-        this.form.validateFields((err, values) => {
-          if (!err) {
-            console.log('Received values of form: ', values);
-            this.$axios
-              .post('login', {
-                username: values.username
-                ,password: values.password
-              })
-              .then(successResponse => {
-                if(successResponse.data.code === 200) {
-                  this.$router.replace({path: '/'})
-                }
-              }).catch(function(error){
-              console.log(error)
+          this.$axios
+            .post('login', {
+              username: this.formInline.username
+              ,password: this.formInline.password
             })
-          }
-        });
+            .then(successResponse => {
+              if(successResponse.data.code === 200) {
+                this.$router.replace({path: '/'})
+              }
+            }).catch(function(error){
+            console.log(error)
+          })
       },
     },
   };
